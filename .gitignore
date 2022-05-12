@@ -1,0 +1,41 @@
+
+/laravelapi/node_modules
+/laravelapi/public/hot
+/laravelapi/public/storage
+/laravelapi/storage/*.key
+/laravelapi/vendor
+/laravelapi/.env
+/laravelapi/.env.backup
+/laravelapi/.phpunit.result.cache
+/laravelapi/docker-compose.override.yml
+/laravelapi/Homestead.json
+/laravelapi/Homestead.yaml
+/laravelapi/npm-debug.log
+/laravelapi/yarn-error.log
+/laravelapi/.idea
+/laravelapi/.vscode
+
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/reactfundaapp/node_modules
+/reactfundaapp/.pnp
+/reactfundaapp/.pnp.js
+
+# testing
+/reactfundaapp/coverage
+
+# production
+/reactfundaapp/build
+
+# misc
+/reactfundaapp/.DS_Store
+/reactfundaapp/.env.local
+/reactfundaapp/.env.development.local
+/reactfundaapp/.env.test.local
+/reactfundaapp/.env.production.local
+
+/reactfundaapp/npm-debug.log*
+/reactfundaapp/yarn-debug.log*
+/reactfundaapp/yarn-error.log*
