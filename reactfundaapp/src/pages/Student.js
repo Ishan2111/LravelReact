@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 class Student extends Component 
 {
@@ -16,6 +18,22 @@ class Student extends Component
                                 </h4>
                             </div>
                             <div className="card-body">
+
+                                <table className="table table-bordered table-striped"></table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Course</th>
+                                        <th>Email Id</th>
+                                        <th>Phone</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
 
                             </div>
                         </div>

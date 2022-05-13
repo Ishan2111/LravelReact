@@ -10,7 +10,7 @@ class Addstudent extends Component
         email: '',
         phone: '',
     }
-
+    
     handleInput = (e) => {
         this.setState({
             [e.target.name]: e.target.value
@@ -21,7 +21,18 @@ class Addstudent extends Component
     saveStudent = async (e) => {
         e.preventDefault();
 
-        const res = await axios.post('/api/add-student', this.state)
+        const res = await axios.post('http://127.0.0.1:8000/api/add-student', this.state)
+
+        if(res.data.status === 200)
+        {
+            console.log(res.data.message)
+            this.setState({
+                name: '',
+                course: '',
+                email: '',
+                phone: '',
+            });
+        }
     }
 
     
