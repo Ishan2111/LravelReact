@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.css';
+import swal from 'sweetalert';
 
 
 class Student extends Component 
@@ -23,6 +24,27 @@ class Student extends Component
                 loading: false,
             });
 
+        }
+    }
+
+
+    deleteStudent = async (e , id) => {
+
+        const thisClicked = e.currentTarget;
+        thisClicked.innerText = 'Deleting';
+        const res = await axios.delete(`http://127.0.0.1:8000/api/delete-student/${id}`);
+        if(res.data.status === 200) 
+        {
+            thisClicked.closest('tr').remove();
+
+            swal({
+                title: "Deleted!",
+                text: res.data.message,
+                icon: "success",
+                button: "Done",
+              });
+
+            console.log(res.data.message)
         }
     }
 
@@ -50,7 +72,7 @@ class Student extends Component
                             <Link to={`edit-student/${item.id}`} className="btn btn-success btn-sm">Edit</Link>
                         </td>
                         <td>
-                            <button type="button" className="btn btn-danger btn-sm">Delete</button>
+                            <button type="button" onClick={(e) =>this.deleteStudent(e, item.id)}className="btn btn-danger btn-sm">Delete</button>
                         </td>
                     </tr>
                 );

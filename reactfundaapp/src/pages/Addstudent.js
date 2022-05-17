@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import swal from 'sweetalert';
+
 
 class Addstudent extends Component 
 {
@@ -9,6 +11,7 @@ class Addstudent extends Component
         course: '',
         email: '',
         phone: '',
+        error_list: [],
     }
     
     handleInput = (e) => {
@@ -26,11 +29,25 @@ class Addstudent extends Component
         if(res.data.status === 200)
         {
             console.log(res.data.message)
+
+            swal({
+                title: "Success!",
+                text: res.data.message,
+                icon: "success",
+                button: "Done",
+              });
+
             this.setState({
                 name: '',
                 course: '',
                 email: '',
                 phone: '',
+            });
+        }
+        else
+        {
+            this.setState({
+                error_list: res.data.validate_err,
             });
         }
     }
@@ -53,18 +70,22 @@ class Addstudent extends Component
                                     <div className="form-group mb-3">
                                         <label>Student Name</label>
                                         <input type="text" name="name" onChange={this.handleInput} value={this.state.name} className="form-control"/>
+                                        <span className="text-danger">{this.state.error_list.name}</span>
                                     </div>
                                     <div className="form-group mb-3">
                                         <label>Student Course</label>
                                         <input type="text" name="course" onChange={this.handleInput} value={this.state.course} className="form-control"/>
+                                        <span className="text-danger">{this.state.error_list.course}</span>
                                     </div>
                                     <div className="form-group mb-3">
                                         <label>Student Email</label>
                                         <input type="text" name="email" onChange={this.handleInput} value={this.state.email} className="form-control"/>
+                                        <span className="text-danger">{this.state.error_list.email}</span>
                                     </div>
                                     <div className="form-group mb-3">
                                         <label>Student Phone</label>
                                         <input type="text" name="phone" onChange={this.handleInput} value={this.state.phone} className="form-control"/>
+                                        <span className="text-danger">{this.state.error_list.phone}</span>
                                     </div>
                                     <div className="form-group mb-3">
                                         <button type="submit" className="btn btn-primary">Save Student

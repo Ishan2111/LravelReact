@@ -15,11 +15,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Student />} ></Route>
           <Route path="/add-student" element={<Addstudent />}></Route>
-            <Route
+            {/* <Route
               path="/edit-student/:id"
               render={({ match }) => <Editstudent id={match.params.id} />}
-            />
-          {/* <Route path="/edit-student/:id" element={<Editstudent/>}></Route> */}
+            /> */}
+          <Route path="/edit-student/:id" element={<Editstudent/>}></Route>
         </Routes>
     </BrowserRouter>
   );

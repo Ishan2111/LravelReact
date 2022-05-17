@@ -1,10 +1,16 @@
 import React, {Component} from "react";
-import { Link } from "react-router-dom";
-// import axios from "axios";
-// import { useParams } from "react-router-dom";
+import { Link , useParams} from "react-router-dom";
+import axios from "axios";
+import swal from 'sweetalert';
+
+
+function withParams(Component) {
+  return props => <Component {...props} params={useParams()} />;
+}
+
 
 class Editstudent extends Component 
-{
+{  
     state = {
         name: '',
         course: '',
@@ -18,48 +24,43 @@ class Editstudent extends Component
         });
     }
 
-
-    componentDidMount() {
-        let { id } = this.props;
-        console.log(id)
-      };
-
-
-
-
-
-    // async componentDidMount() {
-    //     // debugger;
-    //     const stud_id = this.props.match.params.id;
-    //     console.log(stud_id)
-    //     const res = await axios.put(`http://127.0.0.1:8000/api/edit-student/${stud_id}`,this.state);
-    //     if(res.data.status === 200) 
-    //     {
-    //         this.setState({
-    //             name: res.data.student.name,
-    //             course: res.data.student.course,
-    //             email: res.data.student.email,
-    //             phone: res.data.student.phone,
-    //         });
-    //     }
-    // }
+    async componentDidMount() {
+        
+        const { id } = this.props.params;
+        // console.log(id)
+        const res = await axios.get(`http://127.0.0.1:8000/api/edit-student/${id}`)
+        if(res.data.status === 200) 
+        {
+            this.setState({
+                name: res.data.student.name,
+                course: res.data.student.course,
+                email: res.data.student.email,
+                phone: res.data.student.phone,
+            });
+        }
+    }
+    
 
     updateStudent = async (e) => {
         e.preventDefault();
 
-        // const stud_id = this.props.match.params.id;
-        // const res = await axios.put(`http://127.0.0.1:8000/api/update-student/${stud_id}`, this.state)
+        document.getElementById('updatebtn').disabled = true;
+        document.getElementById('updatebtn').innerText ="Updating";
+        const { id } = this.props.params;
+        const res = await axios.put(`http://127.0.0.1:8000/api/update-student/${id}`, this.state)
 
-        // if(res.data.status === 200)
-        // {
-        //     console.log(res.data.message);
-        //     this.setState({
-        //         name: '',
-        //         course: '',
-        //         email: '',
-        //         phone: '',
-        //     });
-        // }
+        if(res.data.status === 200)
+        {
+            console.log(res.data.message);
+            swal({
+                title: "Updated!",
+                text: res.data.message,
+                icon: "success",
+                button: "Done",
+              });
+            document.getElementById('updatebtn').disabled = false;
+            document.getElementById('updatebtn').innerText ="Update Student";
+        }
     }
 
     
@@ -95,7 +96,8 @@ class Editstudent extends Component
                                         <input type="text" name="phone" onChange={this.handleInput} value={this.state.phone} className="form-control"/>
                                     </div>
                                     <div className="form-group mb-3">
-                                        <button type="submit" className="btn btn-primary">Update Student
+                                        <button type="submit" id=
+                                        "updatebtn" className="btn btn-primary">Update Student
                                         </button>
                                     </div>
                                 </form>
@@ -109,4 +111,4 @@ class Editstudent extends Component
 }
 
 
-export default Editstudent;
+export default withParams(Editstudent);
