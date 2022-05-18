@@ -35,8 +35,10 @@ class Addstudent extends Component
                 text: res.data.message,
                 icon: "success",
                 button: "Done",
-              });
+            });
 
+            
+            this.props.history.push('/');
             this.setState({
                 name: '',
                 course: '',

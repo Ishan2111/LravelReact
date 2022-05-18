@@ -1,13 +1,13 @@
 import React, {Component} from "react";
-import { Link , useParams} from "react-router-dom";
+import { Link , useParams , useNavigate} from "react-router-dom";
 import axios from "axios";
 import swal from 'sweetalert';
 
 
 function withParams(Component) {
-  return props => <Component {...props} params={useParams()} />;
+  return props => <Component {...props} params={useParams()} navigate={useNavigate()} />;
+  
 }
-
 
 class Editstudent extends Component 
 {  
@@ -16,6 +16,8 @@ class Editstudent extends Component
         course: '',
         email: '',
         phone: '',
+        error_list: [],
+
     }
     
     handleInput = (e) => {
@@ -38,14 +40,26 @@ class Editstudent extends Component
                 phone: res.data.student.phone,
             });
         }
+        else if(res.data.status === 404)
+        {
+            // alert('error')
+            swal({
+                title: "Warning!",
+                text: res.data.message,
+                icon: "warning",
+                button: "Done",
+              });
+
+              this.props.navigate('/');
+        }
     }
     
 
     updateStudent = async (e) => {
         e.preventDefault();
 
-        document.getElementById('updatebtn').disabled = true;
-        document.getElementById('updatebtn').innerText ="Updating";
+        // document.getElementById('updatebtn').disabled = true;
+        // document.getElementById('updatebtn').innerText ="Updating";
         const { id } = this.props.params;
         const res = await axios.put(`http://127.0.0.1:8000/api/update-student/${id}`, this.state)
 
@@ -58,8 +72,29 @@ class Editstudent extends Component
                 icon: "success",
                 button: "Done",
               });
-            document.getElementById('updatebtn').disabled = false;
-            document.getElementById('updatebtn').innerText ="Update Student";
+
+              this.props.navigate('/');
+
+            // document.getElementById('updatebtn').disabled = false;
+            // document.getElementById('updatebtn').innerText ="Update Student";
+        }
+        else if(res.data.status === 404)
+        {
+            // alert('error')
+            swal({
+                title: "Warning!",
+                text: res.data.message,
+                icon: "warning",
+                button: "Done",
+              });
+
+              this.props.navigate('/');
+        }
+        else
+        {
+            this.setState({
+                error_list: res.data.validate_err,
+            });
         }
     }
 
@@ -82,18 +117,22 @@ class Editstudent extends Component
                                     <div className="form-group mb-3">
                                         <label>Student Name</label>
                                         <input type="text" name="name" onChange={this.handleInput} value={this.state.name} className="form-control"/>
+                                        <span className="text-danger">{this.state.error_list.name}</span>
                                     </div>
                                     <div className="form-group mb-3">
                                         <label>Student Course</label>
                                         <input type="text" name="course" onChange={this.handleInput} value={this.state.course} className="form-control"/>
+                                        <span className="text-danger">{this.state.error_list.course}</span>
                                     </div>
                                     <div className="form-group mb-3">
                                         <label>Student Email</label>
                                         <input type="text" name="email" onChange={this.handleInput} value={this.state.email} className="form-control"/>
+                                        <span className="text-danger">{this.state.error_list.email}</span>
                                     </div>
                                     <div className="form-group mb-3">
                                         <label>Student Phone</label>
                                         <input type="text" name="phone" onChange={this.handleInput} value={this.state.phone} className="form-control"/>
+                                        <span className="text-danger">{this.state.error_list.phone}</span>
                                     </div>
                                     <div className="form-group mb-3">
                                         <button type="submit" id=

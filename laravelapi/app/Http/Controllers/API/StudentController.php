@@ -26,7 +26,7 @@ class StudentController extends Controller
             'name' => 'required|max:191',
             'course' => 'required|max:191',
             'email' => 'required|email|max:191',
-            'phone' => 'required|numeric|max:191',
+            'phone' => 'required|numeric',
         ]);
 
         if($validator->fails()) 
@@ -60,25 +60,66 @@ class StudentController extends Controller
 
         // dd($student);
 
-        return response()->json([
-            'status' => 200,
-            'student' => $student,
-        ]);
+        if($student)
+         {
+             return response()->json([
+                 'status' => 200,
+                 'student' => $student,
+             ]);
+         }
+         else
+         {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No student ID found',
+            ]);
+         }
+
     }
 
     public function update(Request $request, $id)
     {
-        $student = Student::find($id);
-        $student->name = $request->input('name');
-        $student->course = $request->input('course');
-        $student->email = $request->input('email');
-        $student->phone = $request->input('phone');
-        $student->save();
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'Student Updated Successfully',
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|max:191',
+            'course' => 'required|max:191',
+            'email' => 'required|email|max:191',
+            'phone' => 'required|numeric',
         ]);
+
+        if($validator->fails()) 
+        {
+            return response()->json([
+                'validate_err' => $validator->messages(),
+            ]);
+        }
+        else
+        {
+
+            $student = Student::find($id);
+
+            if($student)
+            {
+                $student->name = $request->input('name');
+                $student->course = $request->input('course');
+                $student->email = $request->input('email');
+                $student->phone = $request->input('phone');
+                $student->save();
+    
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Student Updated Successfully',
+                ]);
+            }
+            else
+            {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'No student ID found',
+                ]);
+            }
+
+        }
     }
 
     public function destroy($id)
