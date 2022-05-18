@@ -1,8 +1,12 @@
 import React, {Component} from "react";
-import { Link } from "react-router-dom";
+import { Link , useParams , useNavigate} from "react-router-dom";
 import axios from "axios";
 import swal from 'sweetalert';
 
+
+function withParams(Component) {
+    return props => <Component {...props} params={useParams()} navigate={useNavigate()} />;
+  }
 
 class Addstudent extends Component 
 {
@@ -38,7 +42,7 @@ class Addstudent extends Component
             });
 
             
-            this.props.history.push('/');
+            this.props.navigate('/');
             this.setState({
                 name: '',
                 course: '',
@@ -104,4 +108,4 @@ class Addstudent extends Component
 }
 
 
-export default Addstudent;
+export default withParams(Addstudent);

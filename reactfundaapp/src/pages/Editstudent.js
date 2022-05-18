@@ -6,7 +6,6 @@ import swal from 'sweetalert';
 
 function withParams(Component) {
   return props => <Component {...props} params={useParams()} navigate={useNavigate()} />;
-  
 }
 
 class Editstudent extends Component 
